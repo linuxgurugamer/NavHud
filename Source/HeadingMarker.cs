@@ -49,10 +49,15 @@ namespace NavHud
                 _lines[i] = _objects[i].AddComponent< LineRenderer >() as LineRenderer;
                 _lines[i].GetComponent<Renderer>().material = new Material(Shader.Find("Particles/Additive"));
             }
-            _lines[0].SetVertexCount(6);
-            _lines[1].SetVertexCount(2);
-            _lines[2].SetVertexCount(10);
-            _lines[3].SetVertexCount(2);
+            //_lines[0].SetVertexCount(6);
+            //_lines[1].SetVertexCount(2);
+            //_lines[2].SetVertexCount(10);
+            //_lines[3].SetVertexCount(2);
+
+            _lines[0].positionCount = 6;
+            _lines[1].positionCount = 2;
+            _lines[2].positionCount = 10;
+            _lines[3].positionCount = 2;
         }
 
         public void SetValues(Values values)
@@ -60,14 +65,14 @@ namespace NavHud
             _r = values.Distance;
             _size = values.VectorSize;
 
-            _lines[0].SetWidth(values.LineWidth, values.LineWidth);
-            _lines[1].SetWidth(1f * _size, 0.0f);
-            _lines[2].SetWidth(values.LineWidth, values.LineWidth);
-            _lines[3].SetWidth(1f * _size, 0.0f);
+            Util.SetWidth(ref _lines[0], values.LineWidth, values.LineWidth);
+            Util.SetWidth(ref _lines[1], 1f * _size, 0.0f);
+            Util.SetWidth(ref _lines[2], values.LineWidth, values.LineWidth);
+            Util.SetWidth(ref _lines[3], 1f * _size, 0.0f);
 
             for (int i = 0; i < _lines.Length; i++)
             {
-                _lines[i].SetColors(values.HeadingColor, values.HeadingColor);
+                Util.SetColors(ref _lines[i], values.HeadingColor, values.HeadingColor);
             }
         }
 

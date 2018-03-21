@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{5137BC8E-855D-4F6B-ABE4-91AEB782CE6D}"
 	ProjectSection(SolutionItems) = preProject
 		buildRelease.bat = buildRelease.bat
+		Changelog.txt = Changelog.txt
 		deploy.bat = deploy.bat
 		jenkins.txt = jenkins.txt
 		NavHud.version = NavHud.version
@@ -36,4 +37,3 @@ Global
 		StartupItem = NavHud.csproj
 	EndGlobalSection
 EndGlobal
-

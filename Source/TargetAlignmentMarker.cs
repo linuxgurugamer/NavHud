@@ -47,7 +47,7 @@ namespace NavHud
                 // Add line
                 _lines[i] = _objects[i].AddComponent< LineRenderer >() as LineRenderer;
                 _lines[i].GetComponent<Renderer>().material = new Material(Shader.Find("Particles/Additive"));
-                _lines[i].SetVertexCount(2);
+                _lines[i].positionCount = 2;
             }
         }
 
@@ -58,8 +58,8 @@ namespace NavHud
 
             for (int i = 0; i < _lines.Length; i++)
             {
-                _lines[i].SetWidth(_lineWidth, _lineWidth);
-                _lines[i].SetColors(values.AlignmentColor, values.AlignmentColor);
+                Util.SetWidth(ref _lines[i], _lineWidth, _lineWidth);
+                Util.SetColors(ref _lines[i], values.AlignmentColor, values.AlignmentColor);
             }
         }
 

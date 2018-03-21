@@ -39,29 +39,29 @@ namespace NavHud
                 // Add line
                 _lines[i] = _objects[i].AddComponent< LineRenderer >() as LineRenderer;
                 _lines[i].GetComponent<Renderer>().material = new Material(Shader.Find("Particles/Additive"));
-                _lines[i].SetVertexCount(2);
+                _lines[i].positionCount = 2;
             }
         }
 
         public void SetValues(Values values)
         {
             _r = (float)values.Distance;
-            _lines[Prograde     ].SetColors(values.ProgradeColor, values.ProgradeColor);
-            _lines[Retrograde   ].SetColors(values.ProgradeColor, values.ProgradeColor);
-            _lines[Normal       ].SetColors(values.NormalColor, values.NormalColor);
-            _lines[Antinormal   ].SetColors(values.NormalColor, values.NormalColor);
-            _lines[Radial       ].SetColors(values.RadialColor, values.RadialColor);
-            _lines[Antiradial   ].SetColors(values.RadialColor, values.RadialColor);
-            _lines[Target       ].SetColors(values.TargetColor, values.TargetColor);
-            _lines[Antitarget   ].SetColors(values.TargetColor, values.TargetColor);
-            _lines[Maneuver     ].SetColors(values.ManeuverColor, values.ManeuverColor);
-            _lines[Heading      ].SetColors(values.HeadingColor, values.HeadingColor);
-            _lines[Antiheading  ].SetColors(values.HeadingColor, values.HeadingColor);
-            _lines[Alignment    ].SetColors(values.AlignmentColor, values.AlignmentColor);
-            _lines[Antialignment].SetColors(values.AlignmentColor, values.AlignmentColor);
+            Util.SetColors(ref _lines[Prograde     ], values.ProgradeColor, values.ProgradeColor);
+            Util.SetColors(ref _lines[Retrograde   ], values.ProgradeColor, values.ProgradeColor);
+            Util.SetColors(ref _lines[Normal       ], values.NormalColor, values.NormalColor);
+            Util.SetColors(ref _lines[Antinormal   ], values.NormalColor, values.NormalColor);
+            Util.SetColors(ref _lines[Radial       ], values.RadialColor, values.RadialColor);
+            Util.SetColors(ref _lines[Antiradial   ], values.RadialColor, values.RadialColor);
+            Util.SetColors(ref _lines[Target       ], values.TargetColor, values.TargetColor);
+            Util.SetColors(ref _lines[Antitarget   ], values.TargetColor, values.TargetColor);
+            Util.SetColors(ref _lines[Maneuver     ], values.ManeuverColor, values.ManeuverColor);
+            Util.SetColors(ref _lines[Heading      ], values.HeadingColor, values.HeadingColor);
+            Util.SetColors(ref _lines[Antiheading  ], values.HeadingColor, values.HeadingColor);
+            Util.SetColors(ref _lines[Alignment    ], values.AlignmentColor, values.AlignmentColor);
+            Util.SetColors(ref _lines[Antialignment], values.AlignmentColor, values.AlignmentColor);
             for (int i = 0; i < _lines.Length; i++)
             {
-                _lines[i].SetWidth(0f, 0.01f*_r);
+                Util.SetWidth(ref _lines[i], 0f, 0.01f*_r);
             }
         }
         

@@ -26,6 +26,8 @@ using KSP.IO;
 using System.Collections;
 using System.Collections.Generic;
 using KSP.UI.Screens;
+using ClickThroughFix;
+using ToolbarControl_NS;
 
 namespace NavHud
 {
@@ -37,6 +39,7 @@ namespace NavHud
         private int _version = 2;
 
         private bool _enabled = true;
+        private bool useBlizzy = false;
         private bool _hud_hidden = false;
 
         public bool Enabled {
@@ -135,9 +138,10 @@ namespace NavHud
         private KeyCode _toggleKey = KeyCode.Y;
         private bool _settingKeyBinding = false;
 
-        private bool _toolbarAvailable = false;
-        private IButton _button;
-        public ApplicationLauncherButton stockButton;
+        //private bool _toolbarAvailable = false;
+        //private IButton _button;
+        //public ApplicationLauncherButton stockButton;
+        ToolbarControl toolbarControl = null;
 
         private UnityEngine.GUI.WindowFunction onColorWindow;
 
@@ -166,7 +170,9 @@ namespace NavHud
 
         void Start()
         {
+
             #region Check availability of toolbar
+#if false
             if (ToolbarManager.ToolbarAvailable)
             {
                 _button = ToolbarManager.Instance.add("NavHud", "NavHudButton");
@@ -178,13 +184,17 @@ namespace NavHud
             else{
                 if (ApplicationLauncher.Ready)
                 {
+#endif
                     OnGUIAppLauncherReady();
-                }
+#if false
+        }
                 else
                 {
                     GameEvents.onGUIApplicationLauncherReady.Add(OnGUIAppLauncherReady);
                 }
+
             }
+#endif
             #endregion
 
             // People kept hitting time acceleration by accident, so moved middle-ish.
@@ -194,7 +204,7 @@ namespace NavHud
 
             Load();
 
-            #region Setup hud camera
+#region Setup hud camera
             GameObject hudCameraGameObject = new GameObject("HUDCamera");
             _hudCam = hudCameraGameObject.AddComponent<Camera>();
             _hudCam.transform.position = Vector3.zero;
@@ -203,9 +213,9 @@ namespace NavHud
             _hudCam.clearFlags = CameraClearFlags.Nothing;
             _hudCam.cullingMask = (1 << 7);
             _hudCam.depth = 1;
-            #endregion
+#endregion
 
-            #region Setup MainBehaviour
+#region Setup MainBehaviour
             _behaviour = _hudCam.gameObject.AddComponent<MainBehaviour>();
             _behaviour.HudCam = _hudCam;
             _behaviour.Values = _values;
@@ -214,7 +224,7 @@ namespace NavHud
             _behaviour.MarkersEnabled = _markersEnabled;
             //_behaviour.WaypointEnabled = _waypointEnabled; // Broken 1.1.3 waypoint code
             _behaviour.EnabledMap = _enableMap;
-            #endregion
+#endregion
 
             GameEvents.onShowUI.Add(showUI);
             GameEvents.onHideUI.Add(hideUI);
@@ -261,6 +271,7 @@ namespace NavHud
             config.SetValue("lock text", _lockText);
             config.SetValue("toggle key", _toggleKey);
             config.SetValue("enabled", _enabled);
+            config.SetValue("useBlizzy", useBlizzy);
             config.SetValue("linesEnabled", _linesEnabled);
             config.SetValue("markersEnabled", _markersEnabled);
             //config.SetValue("waypointEnabled", _waypointEnabled); // Broken 1.1.3 waypoint code
@@ -285,6 +296,7 @@ namespace NavHud
                 _lockText = config.GetValue("lock text", false);
                 _toggleKey = config.GetValue<KeyCode>("toggle key");
                 _enabled = config.GetValue<bool>("enabled", true);
+                useBlizzy = config.GetValue<bool>("useBlizzy", true);
                 _linesEnabled = config.GetValue<bool>("linesEnabled", true);
                 _markersEnabled = config.GetValue<bool>("markersEnabled", true);
                 // _waypointEnabled = config.GetValue<bool>("waypointEnabled", true);// Broken 1.1.3 waypoint code
@@ -294,9 +306,12 @@ namespace NavHud
             }
         }
 
-        #region GUI stuff
+#region GUI stuff
+
+
         void OnGUIAppLauncherReady()
         {
+#if false
             {
                 this.stockButton = ApplicationLauncher.Instance.AddModApplication(
                     delegate() {
@@ -313,10 +328,28 @@ namespace NavHud
                     ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW,
                     (Texture)GameDatabase.Instance.GetTexture("NavHud/ToolbarIcon", false));
             }
+#endif
+            toolbarControl = gameObject.AddComponent<ToolbarControl>();
+            toolbarControl.AddToAllToolbars(ToggleWindow, ToggleWindow,
+                 ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW,
+                "NavHud_NS",
+                "navhudButton",
+                "NavHud/ToolbarIcon",
+                "NavHud/ToolbarIcon",
+                "NavBall HUD"
+            );
+            toolbarControl.UseBlizzy(useBlizzy);
+        }
+        void ToggleWindow()
+        {
+            _mainWindowVisible = !_mainWindowVisible;
         }
 
         void OnGUI()
         {
+            if (toolbarControl != null)
+                toolbarControl.UseBlizzy(useBlizzy);
+
             bool showOverlay = !_hud_hidden && _enabled && _enableText && (!MapView.MapIsEnabled || _enableMap);
             bool showMain = _mainWindowVisible;
             bool showColour = _colorWindowVisible;
@@ -334,18 +367,18 @@ namespace NavHud
             mainWindowStyle.fixedWidth = 470f;
             if (showMain)
             {
-                _mainWindowPosition = GUILayout.Window(99241, _mainWindowPosition, OnMainWindow, "NavHud", mainWindowStyle);
+                _mainWindowPosition = ClickThruBlocker.GUILayoutWindow(99241, _mainWindowPosition, OnMainWindow, "NavHud", mainWindowStyle);
             }
             GUIStyle colorWindowStyle = new GUIStyle(HighLogic.Skin.window);
             colorWindowStyle.fixedWidth = 300f;
             if (showColour)
             {
-                _colorWindowPosition = GUILayout.Window(99242, _colorWindowPosition, OnColorWindow, "Color Picker", colorWindowStyle);
+                _colorWindowPosition = ClickThruBlocker.GUILayoutWindow(99242, _colorWindowPosition, OnColorWindow, "Color Picker", colorWindowStyle);
             }
 
             if (showOverlay)
             {
-                _hudTextWindowPosition = GUILayout.Window(99243, _hudTextWindowPosition, OnHudTextWindow, "", GUIStyle.none);
+                _hudTextWindowPosition = ClickThruBlocker.GUILayoutWindow(99243, _hudTextWindowPosition, OnHudTextWindow, "", GUIStyle.none);
             }
 
             GUIStyle hudTextSettingsWindowStyle = new GUIStyle(HighLogic.Skin.window);
@@ -366,6 +399,9 @@ namespace NavHud
             GUILayout.BeginHorizontal(GUILayout.Width(450f));
             GUILayout.BeginVertical(GUILayout.Width(200f));
 
+            GUILayout.BeginHorizontal();
+            useBlizzy = GUILayout.Toggle(useBlizzy, "Use Blizzy toolbar if available", GUILayout.ExpandWidth(true));
+            GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             Enabled = GUILayout.Toggle(Enabled, "Show HUD", GUILayout.ExpandWidth(true));
             _settingKeyBinding ^= GUILayout.Button("[" + (_settingKeyBinding ? "???" : _toggleKey.ToString()) + "]", GUILayout.Width(40f));
@@ -808,7 +844,7 @@ namespace NavHud
             return color;
         }
 
-        #endregion
+#endregion
 
         void OnDestroy()
         {
@@ -821,7 +857,8 @@ namespace NavHud
             {
                 Destroy(_behaviour);
             }
-            if (!_toolbarAvailable)
+#if false
+        if (!_toolbarAvailable)
             {
                 GameEvents.onGUIApplicationLauncherReady.Remove(OnGUIAppLauncherReady);
                 ApplicationLauncher.Instance.RemoveModApplication(stockButton);
@@ -830,8 +867,11 @@ namespace NavHud
             {
                 _button.Destroy();
             }
+#endif
+        toolbarControl.OnDestroy();
+        Destroy(toolbarControl);
 
-        }
+    }
     }
 }
 

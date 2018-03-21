@@ -71,8 +71,8 @@ namespace NavHud
 
             for (int i = 0; i < _length; i++)
             {
-                _lines[i].SetWidth(values.LineWidth, values.LineWidth);
-                _lines[i].SetVertexCount(values.NumberZenithVerts);
+                Util.SetWidth(ref _lines[i], values.LineWidth, values.LineWidth);
+                _lines[i].positionCount = values.NumberZenithVerts;
 
                 p = Mathf.PI * ((float)(i + 1) / (_length + 1) - 0.5f);
                 for (int j = 0; j < values.NumberZenithVerts; j++)
@@ -90,13 +90,13 @@ namespace NavHud
 
             for (int i = 0; i < values.NumberZenithLinesHalf; i++)
             {
-                _lines[i].SetColors(values.LowerHalfColor, values.LowerHalfColor);
+                Util.SetColors(ref _lines[i], values.LowerHalfColor, values.LowerHalfColor);
             }
             for (int i = values.NumberZenithLinesHalf + 1; i < _length; i++)
             {
-                _lines[i].SetColors(values.UpperHalfColor, values.UpperHalfColor);
+                Util.SetColors(ref _lines[i], values.UpperHalfColor, values.UpperHalfColor);
             }
-            _lines[values.NumberZenithLinesHalf].SetColors(values.HorizonColor, values.HorizonColor);
+            Util.SetColors(ref _lines[values.NumberZenithLinesHalf], values.HorizonColor, values.HorizonColor);
 
             if (_hasParent)
             {

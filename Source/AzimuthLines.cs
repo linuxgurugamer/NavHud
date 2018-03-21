@@ -71,8 +71,12 @@ namespace NavHud
 
             for (int i = 0; i < _lines.Length; i++)
             {
-                _lines[i].SetWidth(values.LineWidth, values.LineWidth);
-                _lines[i].SetVertexCount(values.NumberAzimuthVerts);
+                //_lines[i].SetWidth(values.LineWidth, values.LineWidth);
+                _lines[i].startWidth = values.LineWidth;
+                _lines[i].endWidth = values.LineWidth;
+
+                //_lines[i].SetVertexCount(values.NumberAzimuthVerts);
+                _lines[i].positionCount = values.NumberAzimuthVerts;
 
                 p = 2 * i * Mathf.PI / _length;
                 for (int j = 0; j < values.NumberAzimuthVerts; j++)
@@ -92,19 +96,20 @@ namespace NavHud
             {
                 if (i % values.NumberAzimuthLinesQuarter != 0)
                 {
-                    _lines[i].SetColors(values.AzimuthColor, values.AzimuthColor);
+                    Util.SetColors(ref _lines[i], values.AzimuthColor, values.AzimuthColor);
                 }
             }
-            _lines[0].SetColors(values.NorthColor, values.NorthColor);
-            _lines[values.NumberAzimuthLinesQuarter].SetColors(values.EastColor, values.EastColor);
-            _lines[2 * values.NumberAzimuthLinesQuarter].SetColors(values.SouthColor, values.SouthColor);
-            _lines[3 * values.NumberAzimuthLinesQuarter].SetColors(values.WestColor, values.WestColor);
+            Util.SetColors(ref _lines[0], values.NorthColor, values.NorthColor);
+            Util.SetColors(ref _lines[values.NumberAzimuthLinesQuarter], values.EastColor, values.EastColor);
+            Util.SetColors(ref _lines[2 * values.NumberAzimuthLinesQuarter], values.SouthColor, values.SouthColor);
+            Util.SetColors(ref _lines[3 * values.NumberAzimuthLinesQuarter], values.WestColor, values.WestColor);
 
             if (_hasParent)
             {
                 SetParent(_parent);
             }
         }
+
 
         public void SetActive(bool active)
         {
