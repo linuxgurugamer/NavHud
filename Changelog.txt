@@ -3,6 +3,7 @@
 	Added ClickThroughblocker support
 	Updated obsolete unity calls
 	Disabled the ToolbarWrapper
+	Moved changelog into it's own file
 
 1.3.4
 	Adoption by LGG
