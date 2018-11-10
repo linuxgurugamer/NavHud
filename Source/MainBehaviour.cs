@@ -46,7 +46,7 @@ namespace NavHud
             }
         }
 
-        private bool _active, _linesActive, _markersActive, _maneuverActive, _targetActive, _alignActive;//, _waypointActive; // Broken 1.1.3 waypoint code
+        private bool _active, _linesActive, _markersActive, _maneuverActive, _targetActive, _alignActive, _waypointActive;
         private bool _enabled, _linesEnabled, _markersEnabled, _waypointEnabled;
 
         public bool Enabled {
@@ -84,9 +84,9 @@ namespace NavHud
         private TargetAlignmentMarker _targetAlignmentMarker;
         private Markers _markers;
         private EdgeMarkers _edgeMarkers;
-        //private WaypointMarker _waypointMarker; // Broken 1.1.3 waypoint code
+        private WaypointMarker _waypointMarker;
 
-        //private double _waypointSurfHeight = 0; // Broken 1.1.3 waypoint code
+        private double _waypointSurfHeight = 0;
 
         private Vector3 _smoothVel = Vector3.zero;
         //private Vector3 _estAccel = Vector3.zero;
@@ -101,7 +101,7 @@ namespace NavHud
             _azimuthLines = new AzimuthLines();
             _targetAlignmentMarker = new TargetAlignmentMarker();
             _markers = new Markers();
-            //_waypointMarker = new WaypointMarker(); // Broken 1.1.3 waypoint code
+            _waypointMarker = new WaypointMarker();
             _edgeMarkers = new EdgeMarkers();
         }
 
@@ -240,8 +240,7 @@ namespace NavHud
                             _maneuverActive = false;
                         }
                     }
-                    /* // Broken 1.1.3 waypoint code
-                    if (FinePrint.WaypointManager.navIsActive() && _waypointEnabled)
+                    if (NavWaypoint.fetch != null && NavWaypoint.fetch.IsActive && _waypointEnabled)
                     {
                         if (!_waypointActive) 
                         {
@@ -252,8 +251,8 @@ namespace NavHud
                             _edgeMarkers.LoadWaypointColor();
                             if (FlightGlobals.ActiveVessel.mainBody.pqsController != null)
                             {
-                                NavWaypoint navWp = FinePrint.WaypointManager.navWaypoint;
-                                Vector3d pqsRadialVector = QuaternionD.AngleAxis(navWp.longitude, Vector3d.down) * QuaternionD.AngleAxis(navWp.latitude, Vector3d.forward) * Vector3d.right;
+                                NavWaypoint navWp = NavWaypoint.fetch;
+                                Vector3d pqsRadialVector = QuaternionD.AngleAxis(navWp.Longitude, Vector3d.down) * QuaternionD.AngleAxis(navWp.Latitude, Vector3d.forward) * Vector3d.right;
                                 _waypointSurfHeight = FlightGlobals.ActiveVessel.mainBody.pqsController.GetSurfaceHeight(pqsRadialVector)
                                     - FlightGlobals.ActiveVessel.mainBody.pqsController.radius;
                                 if (_waypointSurfHeight < 0)
@@ -270,7 +269,7 @@ namespace NavHud
                             _edgeMarkers.SetWaypointActive(false);
                             _waypointActive = false;
                         }
-                    }*/
+                    }
 
                 } else {
                     if (_markersActive)
@@ -296,13 +295,12 @@ namespace NavHud
                             _edgeMarkers.SetManeuverActive(false);
                             _maneuverActive = false;
                         }
-                        /* // Broken 1.1.3 waypoint code
                         if (_waypointActive)
                         {
                             _waypointMarker.SetActive(false);
                             _edgeMarkers.SetWaypointActive(false);
                             _waypointActive = false;
-                        }*/
+                        }
                     }
                 }
             } else {
@@ -341,13 +339,12 @@ namespace NavHud
                         _edgeMarkers.SetManeuverActive(false);
                         _maneuverActive = false;
                     }
-                    /* // Broken 1.1.3 waypoint code
                     if (_waypointActive)
                     {
                         _waypointMarker.SetActive(false);
                         _edgeMarkers.SetWaypointActive(false);
                         _waypointActive = false;
-                    }*/
+                    }
                 }
             }
         }
@@ -378,7 +375,7 @@ namespace NavHud
             _azimuthLines.SetValues(values);
             _targetAlignmentMarker.SetValues(values);
             _markers.SetValues(values);
-            //_waypointMarker.SetValues(values); // Broken 1.1.3 waypoint code
+            _waypointMarker.SetValues(values);
             _edgeMarkers.SetValues(values);
         }
 
@@ -389,7 +386,7 @@ namespace NavHud
             _zenithLines.SetParent(parent);
             _targetAlignmentMarker.SetParent(parent);
             _markers.SetParent(parent);
-            //_waypointMarker.SetParent(parent); // Broken 1.1.3 waypoint code
+            _waypointMarker.SetParent(parent);
             _edgeMarkers.SetParent(parent);
         }
 
@@ -469,15 +466,13 @@ namespace NavHud
             _markers.SetManeuver(maneuver);
             _edgeMarkers.SetManeuver(maneuver, screenEdge);
         }
-        /* // Broken 1.1.3 waypoint code
         private void UpdateWaypointMarker(Matrix4x4 worldToCamMat, Vector3 screenEdge){
-            NavWaypoint navWp = FinePrint.WaypointManager.navWaypoint;
-            //I can't find a way to get the reference body of the waypoint so I'm using the activevessel's mainbody
-            Vector3d waypointWorldPos = FlightGlobals.ActiveVessel.mainBody.GetWorldSurfacePosition(navWp.latitude, navWp.longitude, navWp.altitude + _waypointSurfHeight);
+            NavWaypoint navWp = NavWaypoint.fetch;
+            Vector3d waypointWorldPos = navWp.Body.GetWorldSurfacePosition(navWp.Latitude, navWp.Longitude, navWp.Altitude + _waypointSurfHeight);
             Vector3 waypoint = worldToCamMat.MultiplyVector(waypointWorldPos - FlightGlobals.ActiveVessel.ReferenceTransform.position).normalized;
             _waypointMarker.SetPositions(waypoint);
             _edgeMarkers.SetWaypoint(waypoint, screenEdge);
-        }*/
+        }
 
     }
 }

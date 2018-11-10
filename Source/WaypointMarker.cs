@@ -12,20 +12,22 @@ namespace NavHud
         public WaypointMarker()
         {
             _object = CreateSimplePlane();
-            _object.GetComponent<Renderer>().material = new Material(Shader.Find("Particles/Additive"));
+            _object.GetComponent<Renderer>().material = new Material(Shader.Find("KSP/Particles/Additive"));
         }
 
         public void LoadTexture()
         {
-            if(FinePrint.WaypointManager.navWaypoint != null)
+            if(NavWaypoint.fetch != null && NavWaypoint.fetch.Visual != null)
             {
-                GameObject navWaypointIndicator = GameObject.Find("NavBall").transform.FindChild("vectorsPivot").FindChild("NavWaypoint").gameObject;
+                GameObject navWaypointIndicator = NavWaypoint.fetch.Visual;
                 Material material = navWaypointIndicator.GetComponent<Renderer>().sharedMaterial;
-                _object.GetComponent<Renderer>().material.mainTexture = material.mainTexture;
+				Texture tex = material.GetTexture("_MainTexture");
+				_object.GetComponent<Renderer>().material.SetTexture("_MainTex", tex);
                 // The colors of the Particles/Additive shader turn out to be twice as bright.. somehow..?
                 // So I'll multiply by scaleColor to compensate.
                 Color scaleColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
-                _object.GetComponent<Renderer>().material.SetColor("_TintColor", material.color * scaleColor);
+				Color col = material.GetColor("_TintColor");
+                _object.GetComponent<Renderer>().material.SetColor("_TintColor", col * scaleColor);
             } else {
                 Debug.LogWarning("Tried to load texture while navWaypoint is not instantiated.");
             }
@@ -73,7 +75,6 @@ namespace NavHud
 
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
-            mesh.Optimize();
 
             meshFilter.mesh = mesh;
 

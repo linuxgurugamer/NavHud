@@ -19,6 +19,7 @@ MOD_FILES := \
 	ToolbarWrapper.cs \
 	Util.cs \
 	Values.cs \
+	WaypointMarker.cs \
 	ZenithLines.cs
 
 RESGEN2		:= resgen2

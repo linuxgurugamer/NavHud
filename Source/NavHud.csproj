@@ -49,7 +49,7 @@
     <Compile Include="Markers.cs" />
     <Compile Include="TargetAlignmentMarker.cs" />
     <Compile Include="Values.cs" />
-    <!--Compile Include="WaypointMarker.cs" /-->
+    <Compile Include="WaypointMarker.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AssemblyVersion.tt">
