@@ -193,12 +193,13 @@ namespace NavHud
 
         public void LoadWaypointColor()
         {
-            if(NavWaypoint.fetch != null)
+            if(NavWaypoint.fetch != null && NavWaypoint.fetch.Visual != null)
             {
-                GameObject navWaypointIndicator = GameObject.Find("NavBall").transform.Find("vectorsPivot").Find("NavWaypoint").gameObject;
+                GameObject navWaypointIndicator = NavWaypoint.fetch.Visual;
                 Material material = navWaypointIndicator.GetComponent<Renderer>().material;
-                _lines[Waypoint].startColor = material.color;
-                _lines[Waypoint].endColor = material.color;
+				Color color = material.GetColor("_TintColor");
+                _lines[Waypoint].startColor = color;
+                _lines[Waypoint].endColor = color;
             } else {
                 Debug.LogWarning("Tried to load texture while navWaypoint is not instantiated.");
             }
