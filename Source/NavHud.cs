@@ -378,7 +378,11 @@ namespace NavHud
 
             if (showOverlay)
             {
-                _hudTextWindowPosition = ClickThruBlocker.GUILayoutWindow(99243, _hudTextWindowPosition, OnHudTextWindow, "", GUIStyle.none);
+				if (!_lockText) {
+					_hudTextWindowPosition = ClickThruBlocker.GUILayoutWindow(99243, _hudTextWindowPosition, OnHudTextWindow, "", GUIStyle.none);
+				} else {
+					_hudTextWindowPosition = GUILayout.Window(99243, _hudTextWindowPosition, OnHudTextWindow, "", GUIStyle.none);
+				}
             }
 
             GUIStyle hudTextSettingsWindowStyle = new GUIStyle(HighLogic.Skin.window);
