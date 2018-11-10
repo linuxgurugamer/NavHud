@@ -17,9 +17,9 @@ namespace NavHud
 
         public void LoadTexture()
         {
-            if(FinePrint.WaypointManager.navWaypoint != null)
+            if(NavWaypoint.fetch != null)
             {
-                GameObject navWaypointIndicator = GameObject.Find("NavBall").transform.FindChild("vectorsPivot").FindChild("NavWaypoint").gameObject;
+                GameObject navWaypointIndicator = GameObject.Find("NavBall").transform.Find("vectorsPivot").Find("NavWaypoint").gameObject;
                 Material material = navWaypointIndicator.GetComponent<Renderer>().sharedMaterial;
                 _object.GetComponent<Renderer>().material.mainTexture = material.mainTexture;
                 // The colors of the Particles/Additive shader turn out to be twice as bright.. somehow..?
@@ -73,7 +73,6 @@ namespace NavHud
 
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
-            mesh.Optimize();
 
             meshFilter.mesh = mesh;
 

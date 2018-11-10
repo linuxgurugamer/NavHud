@@ -190,17 +190,18 @@ namespace NavHud
         {
             _objects[Waypoint    ].SetActive(active);
         }
-        /*
+
         public void LoadWaypointColor()
         {
-            if(FinePrint.WaypointManager.navWaypoint != null)
+            if(NavWaypoint.fetch != null)
             {
-                GameObject navWaypointIndicator = GameObject.Find("NavBall").transform.FindChild("vectorsPivot").FindChild("NavWaypoint").gameObject;
+                GameObject navWaypointIndicator = GameObject.Find("NavBall").transform.Find("vectorsPivot").Find("NavWaypoint").gameObject;
                 Material material = navWaypointIndicator.GetComponent<Renderer>().material;
-                _lines[Waypoint].SetColors(material.color, material.color);
+                _lines[Waypoint].startColor = material.color;
+                _lines[Waypoint].endColor = material.color;
             } else {
                 Debug.LogWarning("Tried to load texture while navWaypoint is not instantiated.");
             }
-        }*/
+        }
     }
 }
