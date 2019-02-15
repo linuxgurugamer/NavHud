@@ -1,3 +1,6 @@
+1.3.6.2
+	Fixed issue where this mod was making some parts semitransparent in certain circumstances
+
 1.3.6
 	Thanks to @taniwah for the following fixes:
 		Update the Moakefile so it works (used on Linux & OSX dev environments)
