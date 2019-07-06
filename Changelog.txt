@@ -1,3 +1,10 @@
+1.3.7
+	Version bump for 1.7.2
+	Updated AssemblyVersion.tt
+	Deleted ToolbarWrapper.cs as it wasn't being used anymore
+	Updated the toolbar code to let the toolbarController manage the blizzy setting
+	Removed the useblizzy from the mod
+
 1.3.6.2
 	Fixed issue where this mod was making some parts semitransparent in certain circumstances
 

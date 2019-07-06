@@ -39,12 +39,13 @@ namespace NavHud
         private int _version = 2;
 
         private bool _enabled = true;
-        private bool useBlizzy = false;
         private bool _hud_hidden = false;
 
-        public bool Enabled {
+        public bool Enabled
+        {
             get { return _enabled; }
-            set {
+            set
+            {
                 if (_enabled != value)
                 {
                     _enabled = value;
@@ -54,9 +55,11 @@ namespace NavHud
         }
 
         private bool _linesEnabled = true;
-        public bool LinesEnabled {
+        public bool LinesEnabled
+        {
             get { return _linesEnabled; }
-            set {
+            set
+            {
                 if (_linesEnabled != value)
                 {
                     _linesEnabled = value;
@@ -66,9 +69,11 @@ namespace NavHud
         }
 
         private bool _markersEnabled = true;
-        public bool MarkersEnabled {
+        public bool MarkersEnabled
+        {
             get { return _markersEnabled; }
-            set {
+            set
+            {
                 if (_markersEnabled != value)
                 {
                     _markersEnabled = value;
@@ -77,9 +82,11 @@ namespace NavHud
             }
         }
         private bool _waypointEnabled = true;
-        public bool WaypointEnabled {
+        public bool WaypointEnabled
+        {
             get { return _waypointEnabled; }
-            set {
+            set
+            {
                 if (_waypointEnabled != value)
                 {
                     _waypointEnabled = value;
@@ -88,18 +95,22 @@ namespace NavHud
             }
         }
         private bool _enableMap = false;
-        public bool EnableMap {
+        public bool EnableMap
+        {
             get { return _enableMap; }
-            set {
+            set
+            {
                 _enableMap = value;
                 _behaviour.EnabledMap = value;
             }
         }
 
         private bool _enableText = true;
-        public bool EnableText {
+        public bool EnableText
+        {
             get { return _enableText; }
-            set {
+            set
+            {
                 if (_enableText != value)
                 {
                     _enableText = value;
@@ -108,9 +119,11 @@ namespace NavHud
         }
 
         private bool _lockText = true;
-        public bool LockText {
+        public bool LockText
+        {
             get { return _lockText; }
-            set {
+            set
+            {
                 if (_lockText != value)
                 {
                     _lockText = value;
@@ -119,9 +132,11 @@ namespace NavHud
         }
 
         private bool _hideWithUI = true;
-        public bool HideWithUI {
+        public bool HideWithUI
+        {
             get { return _hideWithUI; }
-            set {
+            set
+            {
                 if (_hideWithUI != value)
                 {
                     _hideWithUI = value;
@@ -136,20 +151,21 @@ namespace NavHud
         private KeyCode _toggleKey = KeyCode.Y;
         private bool _settingKeyBinding = false;
 
-        //private bool _toolbarAvailable = false;
-        //private IButton _button;
-        //public ApplicationLauncherButton stockButton;
         ToolbarControl toolbarControl = null;
 
         private UnityEngine.GUI.WindowFunction onColorWindow;
 
-        private UnityEngine.GUI.WindowFunction OnColorWindow {
+        private UnityEngine.GUI.WindowFunction OnColorWindow
+        {
             get { return onColorWindow; }
-            set {
+            set
+            {
                 if (onColorWindow == value && _colorWindowVisible)
                 {
                     _colorWindowVisible = false;
-                } else {
+                }
+                else
+                {
                     onColorWindow = value;
                     _colorWindowVisible = true;
                 }
@@ -161,39 +177,10 @@ namespace NavHud
         private bool _mainWindowVisible = false, _colorWindowVisible = false;
         private Rect _hudTextWindowPosition;
 
-        public NavHud()
-        {
-
-        }
-
         void Start()
         {
 
-            #region Check availability of toolbar
-#if false
-            if (ToolbarManager.ToolbarAvailable)
-            {
-                _button = ToolbarManager.Instance.add("NavHud", "NavHudButton");
-                _button.TexturePath = "NavHud/ToolbarIcon";
-                _button.ToolTip = "NavBall HUD";
-                _button.OnClick += (e) => _mainWindowVisible = !_mainWindowVisible;
-                _toolbarAvailable = true;
-            }
-            else{
-                if (ApplicationLauncher.Ready)
-                {
-#endif
-                    OnGUIAppLauncherReady();
-#if false
-        }
-                else
-                {
-                    GameEvents.onGUIApplicationLauncherReady.Add(OnGUIAppLauncherReady);
-                }
-
-            }
-#endif
-            #endregion
+            OnGUIAppLauncherReady();
 
             // People kept hitting time acceleration by accident, so moved middle-ish.
             _mainWindowPosition = new Rect(Screen.width / 3, Screen.height / 6, 10, 10);
@@ -202,7 +189,7 @@ namespace NavHud
 
             Load();
 
-#region Setup hud camera
+            #region Setup hud camera
             GameObject hudCameraGameObject = new GameObject("HUDCamera");
             _hudCam = hudCameraGameObject.AddComponent<Camera>();
             _hudCam.transform.position = Vector3.zero;
@@ -212,9 +199,9 @@ namespace NavHud
             _hudCam.allowHDR = false;
             _hudCam.cullingMask = (1 << 7);
             _hudCam.depth = 1;
-#endregion
+            #endregion
 
-#region Setup MainBehaviour
+            #region Setup MainBehaviour
             _behaviour = _hudCam.gameObject.AddComponent<MainBehaviour>();
             _behaviour.HudCam = _hudCam;
             _behaviour.Values = _values;
@@ -223,7 +210,7 @@ namespace NavHud
             _behaviour.MarkersEnabled = _markersEnabled;
             _behaviour.WaypointEnabled = _waypointEnabled;
             _behaviour.EnabledMap = _enableMap;
-#endregion
+            #endregion
 
             GameEvents.onShowUI.Add(showUI);
             GameEvents.onHideUI.Add(hideUI);
@@ -253,7 +240,9 @@ namespace NavHud
                 if (Input.GetKey(KeyCode.LeftAlt))
                 {
                     FlightGlobals.CycleSpeedModes(); // Changed in 1.1 from FlightUIController.fetch.cycleSpdModes();
-                } else {
+                }
+                else
+                {
                     Enabled = !Enabled;
                 }
             }
@@ -270,7 +259,6 @@ namespace NavHud
             config.SetValue("lock text", _lockText);
             config.SetValue("toggle key", _toggleKey);
             config.SetValue("enabled", _enabled);
-            config.SetValue("useBlizzy", useBlizzy);
             config.SetValue("linesEnabled", _linesEnabled);
             config.SetValue("markersEnabled", _markersEnabled);
             config.SetValue("waypointEnabled", _waypointEnabled);
@@ -287,7 +275,9 @@ namespace NavHud
             if (config.GetValue<int>("version") < _version)
             {
                 Save();
-            } else {
+            }
+            else
+            {
                 _mainWindowPosition = config.GetValue<Rect>("main window position");
                 _colorWindowPosition = config.GetValue<Rect>("color window position");
                 _hudTextWindowPosition = config.GetValue<Rect>("hud text position", new Rect(Screen.width / 2 - 20.0f, Screen.height * 0.7f, 10, 10));
@@ -295,7 +285,6 @@ namespace NavHud
                 _lockText = config.GetValue("lock text", false);
                 _toggleKey = config.GetValue<KeyCode>("toggle key");
                 _enabled = config.GetValue<bool>("enabled", true);
-                useBlizzy = config.GetValue<bool>("useBlizzy", true);
                 _linesEnabled = config.GetValue<bool>("linesEnabled", true);
                 _markersEnabled = config.GetValue<bool>("markersEnabled", true);
                 _waypointEnabled = config.GetValue<bool>("waypointEnabled", true);
@@ -305,40 +294,23 @@ namespace NavHud
             }
         }
 
-#region GUI stuff
+        #region GUI stuff
 
-
+        internal const string MODID = "NavHud_NS";
+        internal const string MODNAME = "NavBall HUD";
         void OnGUIAppLauncherReady()
         {
-#if false
-            {
-                this.stockButton = ApplicationLauncher.Instance.AddModApplication(
-                    delegate() {
-                        _mainWindowVisible = true;
-                    },
-                    delegate() {
-                        _mainWindowVisible = false;
-                    }
-                    ,
-                    null,
-                    null,
-                    null,
-                    null,
-                    ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW,
-                    (Texture)GameDatabase.Instance.GetTexture("NavHud/ToolbarIcon", false));
-            }
-#endif
             toolbarControl = gameObject.AddComponent<ToolbarControl>();
             toolbarControl.AddToAllToolbars(ToggleWindow, ToggleWindow,
                  ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW,
-                "NavHud_NS",
+                MODID,
                 "navhudButton",
                 "NavHud/ToolbarIcon",
                 "NavHud/ToolbarIcon",
-                "NavBall HUD"
+                MODNAME
             );
-            toolbarControl.UseBlizzy(useBlizzy);
         }
+
         void ToggleWindow()
         {
             _mainWindowVisible = !_mainWindowVisible;
@@ -346,22 +318,12 @@ namespace NavHud
 
         void OnGUI()
         {
-            if (toolbarControl != null)
-                toolbarControl.UseBlizzy(useBlizzy);
-
             bool showOverlay = !_hud_hidden && _enabled && _enableText && (!MapView.MapIsEnabled || _enableMap);
             bool showMain = _mainWindowVisible;
             bool showColour = _colorWindowVisible;
             if (!showMain && !showColour && !showOverlay) { return; } // No GUI is enabled
 
-            /* // Old button
-            if (!_toolbarAvailable)
-            {
-                GUILayout.BeginArea(new Rect(200f, 0f, 230f, 30f));
-                _mainWindowVisible ^= GUILayout.Button("NH", GUILayout.Width(30f));
-                GUILayout.EndArea();
-            }
-            */
+
             GUIStyle mainWindowStyle = new GUIStyle(HighLogic.Skin.window);
             mainWindowStyle.fixedWidth = 470f;
             if (showMain)
@@ -377,11 +339,14 @@ namespace NavHud
 
             if (showOverlay)
             {
-				if (!_lockText) {
-					_hudTextWindowPosition = ClickThruBlocker.GUILayoutWindow(99243, _hudTextWindowPosition, OnHudTextWindow, "", GUIStyle.none);
-				} else {
-					_hudTextWindowPosition = GUILayout.Window(99243, _hudTextWindowPosition, OnHudTextWindow, "", GUIStyle.none);
-				}
+                if (!_lockText)
+                {
+                    _hudTextWindowPosition = ClickThruBlocker.GUILayoutWindow(99243, _hudTextWindowPosition, OnHudTextWindow, "", GUIStyle.none);
+                }
+                else
+                {
+                    _hudTextWindowPosition = GUILayout.Window(99243, _hudTextWindowPosition, OnHudTextWindow, "", GUIStyle.none);
+                }
             }
 
             GUIStyle hudTextSettingsWindowStyle = new GUIStyle(HighLogic.Skin.window);
@@ -402,9 +367,6 @@ namespace NavHud
             GUILayout.BeginHorizontal(GUILayout.Width(450f));
             GUILayout.BeginVertical(GUILayout.Width(200f));
 
-            GUILayout.BeginHorizontal();
-            useBlizzy = GUILayout.Toggle(useBlizzy, "Use Blizzy toolbar if available", GUILayout.ExpandWidth(true));
-            GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             Enabled = GUILayout.Toggle(Enabled, "Show HUD", GUILayout.ExpandWidth(true));
             _settingKeyBinding ^= GUILayout.Button("[" + (_settingKeyBinding ? "???" : _toggleKey.ToString()) + "]", GUILayout.Width(40f));
@@ -533,23 +495,23 @@ namespace NavHud
 
             switch (FlightGlobals.speedDisplayMode) // Changed in 1.1 from FlightUIController.speedDisplayMode
             {
-            case FlightGlobals.SpeedDisplayModes.Surface:
-                vel = FlightGlobals.ship_srfSpeed;
-                speedLabel = "Surface: " + vel.ToString("F2") + "m/s";
-                break;
+                case FlightGlobals.SpeedDisplayModes.Surface:
+                    vel = FlightGlobals.ship_srfSpeed;
+                    speedLabel = "Surface: " + vel.ToString("F2") + "m/s";
+                    break;
 
-            case FlightGlobals.SpeedDisplayModes.Orbit:
-                vel = FlightGlobals.ship_obtSpeed;
-                speedLabel = "Orbit: " + vel.ToString("F2") + "m/s";
-                break;
+                case FlightGlobals.SpeedDisplayModes.Orbit:
+                    vel = FlightGlobals.ship_obtSpeed;
+                    speedLabel = "Orbit: " + vel.ToString("F2") + "m/s";
+                    break;
 
-            case FlightGlobals.SpeedDisplayModes.Target:
-                vel = FlightGlobals.ship_tgtSpeed;
-                speedLabel = "Target: " + vel.ToString("F2") + "m/s";
-                break;
+                case FlightGlobals.SpeedDisplayModes.Target:
+                    vel = FlightGlobals.ship_tgtSpeed;
+                    speedLabel = "Target: " + vel.ToString("F2") + "m/s";
+                    break;
 
-            default:
-                throw new ArgumentOutOfRangeException();
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             GUILayout.Label(speedLabel, hudTextStyle);
@@ -587,7 +549,9 @@ namespace NavHud
                 if (Math.Sign(timeToNode) >= 0)
                 {
                     GUILayout.Label("Node in T - " + GetTimeString(Math.Abs(timeToNode)), hudTextStyle);
-                } else {
+                }
+                else
+                {
                     GUILayout.Label("Node in T + " + GetTimeString(Math.Abs(timeToNode)), hudTextStyle);
                 }
             }
@@ -695,11 +659,15 @@ namespace NavHud
                     if (val > 0)
                     {
                         sawNonZero = true;
-                    } else {
+                    }
+                    else
+                    {
                         continue;
                     }
                     timestr += val.ToString();
-                } else {
+                }
+                else
+                {
                     timestr += val.ToString("00");
                 }
                 timestr += postfixes[i];
@@ -847,7 +815,7 @@ namespace NavHud
             return color;
         }
 
-#endregion
+        #endregion
 
         void OnDestroy()
         {
@@ -860,21 +828,12 @@ namespace NavHud
             {
                 Destroy(_behaviour);
             }
-#if false
-        if (!_toolbarAvailable)
-            {
-                GameEvents.onGUIApplicationLauncherReady.Remove(OnGUIAppLauncherReady);
-                ApplicationLauncher.Instance.RemoveModApplication(stockButton);
-            }
-            if (_button != null)
-            {
-                _button.Destroy();
-            }
-#endif
-        toolbarControl.OnDestroy();
-        Destroy(toolbarControl);
 
-    }
+            toolbarControl.OnDestroy();
+            Destroy(toolbarControl);
+
+        }
+
     }
 }
 
