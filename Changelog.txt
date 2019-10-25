@@ -1,3 +1,11 @@
+1.3.8
+	Version bump for 1.8.0
+	Changed TargetFramework to NET 4.0
+	Updated AssemblyVersion.tt
+	Added reference to UnityEngine.CoreModule, UnityEngine.IMGUIModule, UnityEngine.InputLegacyModule, UnityEngine.TextRenderingModule
+	Removed reference to UnityEngine
+	Changed shaders which aren't supported in current UnityEngine
+
 1.3.7
 	Version bump for 1.7.2
 	Updated AssemblyVersion.tt

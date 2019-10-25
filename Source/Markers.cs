@@ -62,7 +62,7 @@ namespace NavHud
             GameObject marker = CreateSimplePlane();
             // Get the texture (code from enhancedNavBall)
             Texture texture = MapView.ManeuverNodePrefab.GetComponent<ManeuverGizmo>().handleNormal.flag.GetComponent<Renderer>().sharedMaterial.mainTexture;
-            marker.GetComponent<Renderer>().material = new Material(Shader.Find("Particles/Additive"));
+            marker.GetComponent<Renderer>().material = new Material(Shader.Find("Legacy Shaders/Particles/Additive"));
             marker.GetComponent<Renderer>().material.mainTexture = texture;
             marker.GetComponent<Renderer>().material.mainTextureScale = Vector2.one / 3;
             marker.GetComponent<Renderer>().material.mainTextureOffset = textureOffset;
