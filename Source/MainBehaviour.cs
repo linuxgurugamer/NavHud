@@ -91,7 +91,7 @@ namespace NavHud
         private Vector3 _smoothVel = Vector3.zero;
         //private Vector3 _estAccel = Vector3.zero;
 
-        public MainBehaviour()
+        void Start()
         {
             // get camera 0 this is the scaled space camera that is active in both flight and mapview
             _mainCam = Camera.allCameras[0];
@@ -103,10 +103,6 @@ namespace NavHud
             _markers = new Markers();
             _waypointMarker = new WaypointMarker();
             _edgeMarkers = new EdgeMarkers();
-        }
-
-        void Start()
-        {
         }
 
         void FixedUpdate()

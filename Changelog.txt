@@ -1,5 +1,8 @@
 ChangeLog
 
+1.4.0.3
+	Moved initialization of vars into Start() function 
+	
 1.4.0.2
 	Really did the MiniAVC update
 
