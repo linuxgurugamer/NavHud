@@ -1,5 +1,11 @@
 ChangeLog
 
+1.4.0.4
+	Fixed the order of initialization.  
+		In NavHud.cs, moved the initial initialization up to the AddComponent into an Awake(), 
+			everything past that was left in the Start()
+		In MainBehaviour, changed Start() to Awake()
+
 1.4.0.3
 	Moved initialization of vars into Start() function 
 	

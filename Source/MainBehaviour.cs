@@ -91,8 +91,10 @@ namespace NavHud
         private Vector3 _smoothVel = Vector3.zero;
         //private Vector3 _estAccel = Vector3.zero;
 
-        void Start()
+
+        public void Awake()
         {
+            Debug.Log("NavHud.MainBehaviour.Start");
             // get camera 0 this is the scaled space camera that is active in both flight and mapview
             _mainCam = Camera.allCameras[0];
 

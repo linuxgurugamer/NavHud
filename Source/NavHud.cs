@@ -177,7 +177,7 @@ namespace NavHud
         private bool _mainWindowVisible = false, _colorWindowVisible = false;
         private Rect _hudTextWindowPosition;
 
-        void Start()
+        void Awake()
         {
 
             OnGUIAppLauncherReady();
@@ -203,6 +203,9 @@ namespace NavHud
 
             #region Setup MainBehaviour
             _behaviour = _hudCam.gameObject.AddComponent<MainBehaviour>();
+        }
+        public void Start()
+        { 
             _behaviour.HudCam = _hudCam;
             _behaviour.Values = _values;
             _behaviour.Enabled = _enabled;
