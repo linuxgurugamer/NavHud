@@ -1,5 +1,9 @@
 ChangeLog
 
+1.4.1
+	Thanks to github user @clayell for this:
+		Allow the arrows (edge markers) to be toggled
+
 1.4.0.5
 	Renamed DLL for CKAN compatibility
 	Added AssemblyFileVersion
