@@ -47,7 +47,7 @@ namespace NavHud
         }
 
         private bool _active, _linesActive, _markersActive, _maneuverActive, _targetActive, _alignActive, _waypointActive;
-        private bool _enabled, _linesEnabled, _markersEnabled, _waypointEnabled;
+        private bool _enabled, _linesEnabled, _markersEnabled, _waypointEnabled, _arrowsEnabled;
 
         public bool Enabled {
             get { return _enabled; }
@@ -67,9 +67,16 @@ namespace NavHud
             set { _markersEnabled = value; }
         }
 
-        public bool WaypointEnabled {
+        public bool WaypointEnabled
+        {
             get { return _waypointEnabled; }
             set { _waypointEnabled = value; }
+        }
+
+        public bool ArrowsEnabled
+        {
+            get { return _arrowsEnabled; }
+            set { _arrowsEnabled = value; }
         }
 
         private bool _enabledMap = false;
@@ -148,7 +155,7 @@ namespace NavHud
                 if (!_active)
                 {
                     _headingMarker.SetActive(true);
-                    _edgeMarkers.SetHeadingActive(true);
+                    _edgeMarkers.SetHeadingActive(true, ArrowsEnabled);
                     _active = true;
                 }
                 Matrix4x4 worldToCamMat = _mainCam.transform.worldToLocalMatrix;
@@ -177,7 +184,7 @@ namespace NavHud
                     if (!_markersActive)
                     {
                         _markers.SetDirectionsActive(true);
-                        _edgeMarkers.SetDirectionsActive(true);
+                        _edgeMarkers.SetDirectionsActive(true, ArrowsEnabled);
                         _markersActive = true;
                     }
                     UpdateMarkers(worldToCamMat, screenEdge);
@@ -186,7 +193,7 @@ namespace NavHud
                         if (!_targetActive)
                         {
                             _markers.SetTargetActive(true);
-                            _edgeMarkers.SetTargetActive(true);
+                            _edgeMarkers.SetTargetActive(true, ArrowsEnabled);
                             _targetActive = true;
                         }
                         UpdateTargetMarkers(worldToCamMat, screenEdge);
@@ -195,7 +202,7 @@ namespace NavHud
                             if (!_alignActive)
                             {
                                 _targetAlignmentMarker.SetActive(true);
-                                _edgeMarkers.SetAlignmentActive(true);
+                                _edgeMarkers.SetAlignmentActive(true, ArrowsEnabled);
                                 _alignActive = true;
                             }
                             UpdateAlignMarkers(worldToCamMat, screenEdge);
@@ -203,7 +210,7 @@ namespace NavHud
                             if (_alignActive)
                             {
                                 _targetAlignmentMarker.SetActive(false);
-                                _edgeMarkers.SetAlignmentActive(false);
+                                _edgeMarkers.SetAlignmentActive(false, ArrowsEnabled);
                                 _alignActive = false;
                             }
                         }
@@ -211,13 +218,13 @@ namespace NavHud
                         if (_targetActive)
                         {
                             _markers.SetTargetActive(false);
-                            _edgeMarkers.SetTargetActive(false);
+                            _edgeMarkers.SetTargetActive(false, ArrowsEnabled);
                             _targetActive = false;
                         }
                         if (_alignActive)
                         {
                             _targetAlignmentMarker.SetActive(false);
-                            _edgeMarkers.SetAlignmentActive(false);
+                            _edgeMarkers.SetAlignmentActive(false, ArrowsEnabled);
                             _alignActive = false;
                         }
                     }
@@ -226,7 +233,7 @@ namespace NavHud
                         if (!_maneuverActive)
                         {
                             _markers.SetManeuverActive(true);
-                            _edgeMarkers.SetManeuverActive(true);
+                            _edgeMarkers.SetManeuverActive(true, ArrowsEnabled);
                             _maneuverActive = true;
                         }
                         UpdateManeuverMarker(worldToCamMat, screenEdge);
@@ -234,7 +241,7 @@ namespace NavHud
                         if (_maneuverActive)
                         {
                             _markers.SetManeuverActive(false);
-                            _edgeMarkers.SetManeuverActive(false);
+                            _edgeMarkers.SetManeuverActive(false, ArrowsEnabled);
                             _maneuverActive = false;
                         }
                     }
@@ -243,7 +250,7 @@ namespace NavHud
                         if (!_waypointActive) 
                         {
                             _waypointMarker.SetActive(true);
-                            _edgeMarkers.SetWaypointActive(true);
+                            _edgeMarkers.SetWaypointActive(true, ArrowsEnabled);
                             _waypointActive = true;
                             _waypointMarker.LoadTexture();
                             _edgeMarkers.LoadWaypointColor();
@@ -264,7 +271,7 @@ namespace NavHud
                         if (_waypointActive)
                         {
                             _waypointMarker.SetActive(false);
-                            _edgeMarkers.SetWaypointActive(false);
+                            _edgeMarkers.SetWaypointActive(false, ArrowsEnabled);
                             _waypointActive = false;
                         }
                     }
@@ -273,30 +280,30 @@ namespace NavHud
                     if (_markersActive)
                     {
                         _markers.SetDirectionsActive(false);
-                        _edgeMarkers.SetDirectionsActive(false);
+                        _edgeMarkers.SetDirectionsActive(false, ArrowsEnabled);
                         _markersActive = false;
                         if (_targetActive)
                         {
                             _markers.SetTargetActive(false);
-                            _edgeMarkers.SetTargetActive(false);
+                            _edgeMarkers.SetTargetActive(false, ArrowsEnabled);
                             _targetActive = false;
                         }
                         if (_alignActive)
                         {
                             _targetAlignmentMarker.SetActive(false);
-                            _edgeMarkers.SetTargetActive(false);
+                            _edgeMarkers.SetTargetActive(false, ArrowsEnabled);
                             _alignActive = false;
                         }
                         if (_maneuverActive)
                         {
                             _markers.SetManeuverActive(false);
-                            _edgeMarkers.SetManeuverActive(false);
+                            _edgeMarkers.SetManeuverActive(false, ArrowsEnabled);
                             _maneuverActive = false;
                         }
                         if (_waypointActive)
                         {
                             _waypointMarker.SetActive(false);
-                            _edgeMarkers.SetWaypointActive(false);
+                            _edgeMarkers.SetWaypointActive(false, ArrowsEnabled);
                             _waypointActive = false;
                         }
                     }
@@ -305,7 +312,7 @@ namespace NavHud
                 if (_active)
                 {
                     _headingMarker.SetActive(false);
-                    _edgeMarkers.SetHeadingActive(false);
+                    _edgeMarkers.SetHeadingActive(false, ArrowsEnabled);
                     _active = false;
                     if (_linesActive)
                     {
@@ -316,31 +323,31 @@ namespace NavHud
                     if (_markersActive)
                     {
                         _markers.SetDirectionsActive(false);
-                        _edgeMarkers.SetDirectionsActive(false);
+                        _edgeMarkers.SetDirectionsActive(false, ArrowsEnabled);
                         _markersActive = false;
                     }
                     if (_targetActive)
                     {
                         _markers.SetTargetActive(false);
-                        _edgeMarkers.SetTargetActive(false);
+                        _edgeMarkers.SetTargetActive(false, ArrowsEnabled);
                         _targetActive = false;
                     }
                     if (_alignActive)
                     {
                         _targetAlignmentMarker.SetActive(false);
-                        _edgeMarkers.SetAlignmentActive(false);
+                        _edgeMarkers.SetAlignmentActive(false, ArrowsEnabled);
                         _alignActive = false;
                     }
                     if (_maneuverActive)
                     {
                         _markers.SetManeuverActive(false);
-                        _edgeMarkers.SetManeuverActive(false);
+                        _edgeMarkers.SetManeuverActive(false, ArrowsEnabled);
                         _maneuverActive = false;
                     }
                     if (_waypointActive)
                     {
                         _waypointMarker.SetActive(false);
-                        _edgeMarkers.SetWaypointActive(false);
+                        _edgeMarkers.SetWaypointActive(false, ArrowsEnabled);
                         _waypointActive = false;
                     }
                 }

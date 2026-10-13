@@ -155,40 +155,47 @@ namespace NavHud
             return pointer;
         }
 
-        public void SetDirectionsActive(bool active)
+        public void SetDirectionsActive(bool active, bool arrowsEnabled)
         {
-            for (int i = 0; i < 6; i++)
-            {
-                _objects[i].SetActive(active);
-            }
+            SetActive(Prograde, active && arrowsEnabled);
+            SetActive(Retrograde, active && arrowsEnabled);
+            SetActive(Normal, active && arrowsEnabled);
+            SetActive(Antinormal, active && arrowsEnabled);
+            SetActive(Radial, active && arrowsEnabled);
+            SetActive(Antiradial, active && arrowsEnabled);
         }
 
-        public void SetTargetActive(bool active)
+        public void SetTargetActive(bool active, bool arrowsEnabled)
         {
-            _objects[Target    ].SetActive(active);
-            _objects[Antitarget].SetActive(active);
+            SetActive(Target, active && arrowsEnabled);
+            SetActive(Antitarget, active && arrowsEnabled);
         }
 
-        public void SetManeuverActive(bool active)
+        public void SetManeuverActive(bool active, bool arrowsEnabled)
         {
-            _objects[Maneuver].SetActive(active);
+            SetActive(Maneuver, active && arrowsEnabled);
         }
 
-        public void SetHeadingActive(bool active)
+        public void SetHeadingActive(bool active, bool arrowsEnabled)
         {
-            _objects[Heading    ].SetActive(active);
-            _objects[Antiheading].SetActive(active);
+            SetActive(Heading, active && arrowsEnabled);
+            SetActive(Antiheading, active && arrowsEnabled);
         }
 
-        public void SetAlignmentActive(bool active)
+        public void SetAlignmentActive(bool active, bool arrowsEnabled)
         {
-            _objects[Alignment    ].SetActive(active);
-            _objects[Antialignment].SetActive(active);
+            SetActive(Alignment, active && arrowsEnabled);
+            SetActive(Antialignment, active && arrowsEnabled);
         }
 
-        public void SetWaypointActive(bool active)
+        public void SetWaypointActive(bool active, bool arrowsEnabled)
         {
-            _objects[Waypoint    ].SetActive(active);
+            SetActive(Waypoint, active && arrowsEnabled);
+        }
+
+        private void SetActive(int key, bool active)
+        {
+            _objects[key].SetActive(active);
         }
 
         public void LoadWaypointColor()

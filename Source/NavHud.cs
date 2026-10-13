@@ -81,6 +81,7 @@ namespace NavHud
                 }
             }
         }
+
         private bool _waypointEnabled = true;
         public bool WaypointEnabled
         {
@@ -94,6 +95,22 @@ namespace NavHud
                 }
             }
         }
+
+        private bool _arrowsEnabled = true;
+        public bool ArrowsEnabled
+        {
+            get { return _arrowsEnabled; }
+            set
+            {
+                if (_arrowsEnabled != value)
+                {
+                    _arrowsEnabled = value;
+                    _behaviour.ArrowsEnabled = value;
+                    StartCoroutine(ToggleMarkers());
+                }
+            }
+        }
+
         private bool _enableMap = false;
         public bool EnableMap
         {
@@ -265,6 +282,7 @@ namespace NavHud
             config.SetValue("linesEnabled", _linesEnabled);
             config.SetValue("markersEnabled", _markersEnabled);
             config.SetValue("waypointEnabled", _waypointEnabled);
+            config.SetValue("arrowsEnabled", _arrowsEnabled);
             config.SetValue("enabledMap", _enableMap);
             config.SetValue("hideWithUI", _hideWithUI);
             _values.Save(config);
@@ -291,6 +309,7 @@ namespace NavHud
                 _linesEnabled = config.GetValue<bool>("linesEnabled", true);
                 _markersEnabled = config.GetValue<bool>("markersEnabled", true);
                 _waypointEnabled = config.GetValue<bool>("waypointEnabled", true);
+                _arrowsEnabled = config.GetValue<bool>("arrowsEnabled", true);
                 _enableMap = config.GetValue<bool>("enabledMap", false);
                 _hideWithUI = config.GetValue<bool>("hideWithUI", true);
                 _values.Load(config);
@@ -377,6 +396,7 @@ namespace NavHud
             MarkersEnabled = GUILayout.Toggle(MarkersEnabled, "Show markers");
             LinesEnabled = GUILayout.Toggle(LinesEnabled, "Show lines");
             WaypointEnabled = GUILayout.Toggle(WaypointEnabled, "Show waypoint");
+            ArrowsEnabled = GUILayout.Toggle(ArrowsEnabled, "Show arrows");
             EnableMap = GUILayout.Toggle(EnableMap, "Show in map");
             EnableText = GUILayout.Toggle(EnableText, "Show HUD text");
             HideWithUI = GUILayout.Toggle(HideWithUI, "Hide with UI");
@@ -819,6 +839,15 @@ namespace NavHud
         }
 
         #endregion
+
+        // this is so jank but the codebase is so bad so its the best way to do this
+        private IEnumerator ToggleMarkers()
+        {
+            yield return new WaitForEndOfFrame();
+            MarkersEnabled = !MarkersEnabled;
+            yield return new WaitForEndOfFrame();
+            MarkersEnabled = !MarkersEnabled;
+        }
 
         void OnDestroy()
         {
